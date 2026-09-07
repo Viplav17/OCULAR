@@ -1,1 +1,1 @@
-token = "YOUR_SERPAPI_KEY"
+token = "YOUR_SERPAPI_TOKEN"

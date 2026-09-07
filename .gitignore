@@ -1,6 +1,6 @@
 venv/
 .env
-APIt.py
+API_tk.py
 .venv/
 __pycache__
 Test_Image.png

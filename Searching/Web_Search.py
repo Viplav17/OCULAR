@@ -64,13 +64,9 @@ def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, thres
             candidate_vector = embedding_objs[0]["embedding"]
             distance = cosine_distance(ref_vector, candidate_vector)
 
-            raw_title = match.get("title", "Unknown")
-            extracted_name = raw_title.split('-')[0].split('|')[0].strip()
-
             if distance >= threshold:
                 results_list.append({
                     "match_id": idx,
-                    "identified_name": extracted_name,
                     "title": match.get("title", "No Title"),
                     "page_url": match.get("link", ""),
                     "image_url": img_url,
