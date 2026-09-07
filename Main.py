@@ -32,6 +32,17 @@ def looks_like_human_name(name_str):
         return False
     return True
 
+def get_input_image_path(folder_name="Input_Image"):
+    """Dynamically scans the Input_Image folder for any supported image file."""
+    if not os.path.exists(folder_name):
+        return None
+    
+    supported_extensions = ('.png', '.jpg', '.jpeg')
+    for file in os.listdir(folder_name):
+        if file.lower().endswith(supported_extensions):
+            return os.path.join(folder_name, file)
+    return None
+
 def run_pipeline(input_image: str):
     delay_print("\n[1] Initializing Blockchain...", 0.6)
     BC = BlockChain()
@@ -66,7 +77,7 @@ def run_pipeline(input_image: str):
 
     delay_print(f"    [+] Found {len(matches)} valid match(es).", 0.6)
     
-    mint_choice = input(f"\n[?] Ready to mint {len(matches)} blocks to the Blockchain. Proceed? (y/n): ")
+    mint_choice = input(f"\n[?] Ready to mint {len(matches)} blocks to the blockchain. Proceed? (y/n): ")
     if mint_choice.lower() != 'y':
         delay_print("Operation cancelled by user.", 0.4)
         return
@@ -88,7 +99,7 @@ def run_pipeline(input_image: str):
         delay_print("\n--- Complete Blockchain Blockchain ---", 0.5)
         BC.Print_Chain()
 
-    export_choice = input("\n[?] Do you want to export the Blockchain to 'blockchain_output.json'? (y/n): ")
+    export_choice = input("\n[?] Do you want to export the blockchain to 'blockchain_output.json'? (y/n): ")
     if export_choice.lower() == 'y':
         chain_data = []
         for block in BC.chain:
@@ -109,21 +120,23 @@ def run_pipeline(input_image: str):
 def main_menu():
     while True:
         delay_print("\n=== HH GOA 2026: Identity Verification Pipeline ===", 0.3)
-        print("1. Scan a new image and build Blockchain")
-        print("2. Verify an existing exported JSON Blockchain")
+        print("1. Scan a new image and build blockchain")
+        print("2. Verify an existing exported JSON blockchain")
         print("3. Exit")
         
         choice = input("Select an option (1-3): ")
         
         if choice == '1':
-            target_image = "Test_Image.png"
-            if not os.path.exists(target_image):
-                delay_print(f"\n[!] Error: {target_image} not found in the current directory.", 0.5)
+            target_image = get_input_image_path("Input_Image")
+            if not target_image:
+                delay_print("\n[!] Error: No image file (.png, .jpg, .jpeg) found inside the 'Input_Image' folder.", 0.5)
             else:
+                delay_print(f"\n[+] Target image located: {target_image}", 0.4)
                 run_pipeline(target_image)
         elif choice == '2':
-            delay_print("\n=== Blockchain INTEGRITY VERIFICATION SUITE ===", 0.3)
+            delay_print("\n=== BLOCKCHAIN INTEGRITY VERIFICATION SUITE ===", 0.3)
             verifier = BlockChain()
+            # Ensure this matches your method name inside BlockChain class (e.g., Verify_Blockchain_File)
             verifier.Verify_Blockchain_File("blockchain_output.json")
         elif choice == '3':
             delay_print("Exiting...", 0.3)
