@@ -1,4 +1,4 @@
-# Visual Identity Verification & Cryptographic Ledger Pipeline (HH Goa 2026 - Task 3)
+# Visual Identity Verification & Cryptographic Blockchain Pipeline (HH Goa 2026 - Task 3)
 
 An automated pipeline that extracts facial embeddings from an input scan, performs reverse visual discovery across web and social media platforms, and anchors confirmed matches into a tamper-evident, cryptographically verified blockchain ledger.
 
@@ -10,7 +10,7 @@ The pipeline operates in three modular phases:
 
 1. **Face Extraction & Vectorization:** The input image is parsed to isolate the primary face. Features are extracted into a 512-dimensional vector embedding using the ArcFace deep neural network architecture via MTCNN face alignment.
 2. **Dynamic Reverse Search & Candidate Verification:** The face scan is submitted to Google Lens via SerpApi. Discovered candidates are dynamically retrieved, re-encoded using identical model parameters, and compared against the target vector using Cosine Distance. Only candidates meeting the similarity threshold are promoted. Global entity name resolution intelligently unifies valid human names across candidate metadata.
-3. **Cryptographic Ledger Ingestion & Verification:** Verified social matches (containing source URLs, profile metadata, and cryptographic image fingerprints) are organized into structured blocks. Each block is cryptographically linked to the previous block via SHA-256 header hashes and Merkle root calculations. Tamper-evidence is natively supported via the `Verify_Ledger_File` method, which rebuilds the chain in memory and independently re-verifies block integrity against the exported JSON state.
+3. **Cryptographic Blockchain Ingestion & Verification:** Verified social matches (containing source URLs, profile metadata, and cryptographic image fingerprints) are organized into structured blocks. Each block is cryptographically linked to the previous block via SHA-256 header hashes and Merkle root calculations. Tamper-evidence is natively supported via the `Verify_Blockchain_File` method, which rebuilds the chain in memory and independently re-verifies block integrity against the exported JSON state.
 
 ---
 
@@ -18,9 +18,9 @@ The pipeline operates in three modular phases:
 
 This project implements a **Custom Local Cryptographic Blockchain**:
 
-* **Ledger Mechanics:** Begins with a deterministic Genesis Block (Height `0`, Previous Hash `0`*64). Subsequent blocks link strictly to the preceding block's header hash.
+* **Blockchain Mechanics:** Begins with a deterministic Genesis Block (Height `0`, Previous Hash `0`*64). Subsequent blocks link strictly to the preceding block's header hash.
 * **Merkle Integrity:** Block payloads (transaction data) are serialized with deterministic key ordering and hashed via double SHA-256 (`hash256`) to construct the Merkle root stored in the `BlockHeader`.
-* **Tamper Verification:** The built-in `Verify_Block` and `Verify_Ledger_File` methods recompute both the Merkle root from stored payload data and the Block Hash from header fields to prove immutability. Any modification to on-chain records invalidates the cryptographic proof.
+* **Tamper Verification:** The built-in `Verify_Block` and `Verify_Blockchain_File` methods recompute both the Merkle root from stored payload data and the Block Hash from header fields to prove immutability. Any modification to on-chain records invalidates the cryptographic proof.
 
 ---
 
