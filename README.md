@@ -71,5 +71,5 @@ python Main.py
 This will launch an interactive terminal menu featuring the following options:
 
 1. **Scan a new image and build Blockchain:** Automatically processes the image in the Input_Image folder (containing your target input image), performs the facial vector extraction, queries SerpApi Google Lens, filters matches, resolves identities, and interactively guides you through minting blocks, viewing the chain, and exporting to `blockchain_output.json`.
-2. **Verify an existing exported JSON ledger:** Automatically invokes the built-in Blockchain verification suite to parse `blockchain_output.json`, reconstruct the chain in memory, recompute Merkle roots and header hashes, and output cryptographic health status.
+2. **Verify an existing exported JSON Blockchain:** Automatically invokes the built-in Blockchain verification suite to parse `blockchain_output.json`, reconstruct the chain in memory, recompute Merkle roots and header hashes, and output cryptographic health status.
 3. **Exit:** Cleanly terminates the program.
