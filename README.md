@@ -1,4 +1,4 @@
-# Visual Identity Verification & Cryptographic Blockchain Pipeline (HH Goa 2026 - Task 3)
+# OCULAR - Visual Identity Verification & Cryptographic Blockchain Pipeline (HH Goa 2026 - Task 3)
 
 An automated pipeline that extracts facial embeddings from an input scan, performs reverse visual discovery across web and social media platforms, and anchors confirmed matches into a tamper-evident, cryptographically verified blockchain ledger.
 
