@@ -66,7 +66,7 @@ def run_pipeline(input_image: str):
 
     delay_print(f"    [+] Found {len(matches)} valid match(es).", 0.6)
     
-    mint_choice = input(f"\n[?] Ready to mint {len(matches)} blocks to the ledger. Proceed? (y/n): ")
+    mint_choice = input(f"\n[?] Ready to mint {len(matches)} blocks to the Blockchain. Proceed? (y/n): ")
     if mint_choice.lower() != 'y':
         delay_print("Operation cancelled by user.", 0.4)
         return
@@ -78,17 +78,17 @@ def run_pipeline(input_image: str):
         print(f"    -> Block #{new_block.Height} created! Hash: {new_block.Block_Hash}")
         
         is_valid = BC.Verify_Block(new_block)
-        print(f"    -> Ledger Verification Status: {'PASSED (Valid)' if is_valid else 'FAILED'}")
+        print(f"    -> Blockchain Verification Status: {'PASSED (Valid)' if is_valid else 'FAILED'}")
         step += 1
 
     delay_print("\n[+] All matches successfully minted.", 0.6)
     
-    print_choice = input("\n[?] Do you want to print the complete blockchain ledger to the terminal? (y/n): ")
+    print_choice = input("\n[?] Do you want to print the complete blockchain Blockchain to the terminal? (y/n): ")
     if print_choice.lower() == 'y':
-        delay_print("\n--- Complete Blockchain Ledger ---", 0.5)
+        delay_print("\n--- Complete Blockchain Blockchain ---", 0.5)
         BC.Print_Chain()
 
-    export_choice = input("\n[?] Do you want to export the ledger to 'blockchain_output.json'? (y/n): ")
+    export_choice = input("\n[?] Do you want to export the Blockchain to 'blockchain_output.json'? (y/n): ")
     if export_choice.lower() == 'y':
         chain_data = []
         for block in BC.chain:
@@ -109,8 +109,8 @@ def run_pipeline(input_image: str):
 def main_menu():
     while True:
         delay_print("\n=== HH GOA 2026: Identity Verification Pipeline ===", 0.3)
-        print("1. Scan a new image and build ledger")
-        print("2. Verify an existing exported JSON ledger")
+        print("1. Scan a new image and build Blockchain")
+        print("2. Verify an existing exported JSON Blockchain")
         print("3. Exit")
         
         choice = input("Select an option (1-3): ")
@@ -122,9 +122,9 @@ def main_menu():
             else:
                 run_pipeline(target_image)
         elif choice == '2':
-            delay_print("\n=== LEDGER INTEGRITY VERIFICATION SUITE ===", 0.3)
+            delay_print("\n=== Blockchain INTEGRITY VERIFICATION SUITE ===", 0.3)
             verifier = BlockChain()
-            verifier.Verify_Ledger_File("blockchain_output.json")
+            verifier.Verify_Blockchain_File("blockchain_output.json")
         elif choice == '3':
             delay_print("Exiting...", 0.3)
             sys.exit(0)
