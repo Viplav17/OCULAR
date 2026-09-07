@@ -1,3 +1,11 @@
+import os, logging
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+logging.getLogger("tensorflow").setLevel(logging.ERROR)
+logging.getLogger("tf_keras").setLevel(logging.ERROR)
+
 from Searching.Search import Search
 from Blockchain.Backend.Core.BlockChain import BlockChain
 from Blockchain.Backend.util.util import hash256
