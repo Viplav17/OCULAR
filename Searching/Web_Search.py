@@ -102,5 +102,4 @@ def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, thres
 
     results_list.sort(key=lambda x: x["cosine_distance"])
     
-    # Return the structured blockchain data AND the single identified person's name
     return results_list, top_entity

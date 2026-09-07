@@ -136,7 +136,6 @@ def main_menu():
         elif choice == '2':
             delay_print("\n=== BLOCKCHAIN INTEGRITY VERIFICATION SUITE ===", 0.3)
             verifier = BlockChain()
-            # Ensure this matches your method name inside BlockChain class (e.g., Verify_Blockchain_File)
             verifier.Verify_Blockchain_File("blockchain_output.json")
         elif choice == '3':
             delay_print("Exiting...", 0.3)
