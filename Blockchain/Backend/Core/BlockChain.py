@@ -12,6 +12,9 @@ class BlockChain:
         self.chain = [self.Genesis_Block()]
 
     def Genesis_Block(self):
+
+        """Generates the foundational block (Height 0) of the blockchain."""
+
         Gen_Block_Head = BlockHeader(
             0,
             ZERO_HASH,
@@ -29,6 +32,7 @@ class BlockChain:
         return Gen_Block
 
     def Add_Block(self, data: list):
+        """Mints and appends a new block containing arbitrary data to the chain."""
         prev_block = self.chain[-1]
         prev_hash = prev_block.Block_Hash
 
@@ -54,6 +58,7 @@ class BlockChain:
         return New_Block
 
     def Verify_Block(self, Block):
+        """Validates the cryptographic integrity and ancestry of a given block."""
         if Block.Height == 0:
             return Block.BlockHeader.PrevBlockHash == ZERO_HASH
 
@@ -73,7 +78,8 @@ class BlockChain:
 
         return True
 
-    def Print_Chain(self):  
+    def Print_Chain(self):
+        """Prints the payload data of every block"""
         for Block in self.chain:
             print(f"\n--- Block {Block.Height} ---")
             print(js.dumps(Block.Data, indent=4, sort_keys=True))

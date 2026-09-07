@@ -12,6 +12,9 @@ from Searching.API_tk import token
 SERPAPI_API_KEY = token
 
 def search_google_lens(image_bytes, api_key):
+
+    """Uploads an image to SerpApi and retrieves Google Lens search results."""
+
     upload_res = requests.post(
         "https://serpapi.com/image",
         files={"image": ("input.jpg", image_bytes, "image/jpeg")},
@@ -25,7 +28,6 @@ def search_google_lens(image_bytes, api_key):
 
     client = serpapi.Client(api_key=api_key)
     
-    # Removed "type": "visual_matches" so we get the full JSON including the knowledge graph
     results = client.search({
         "engine": "google_lens",
         "image_id": image_id,
@@ -35,7 +37,6 @@ def search_google_lens(image_bytes, api_key):
     visual_matches = results.get("visual_matches", [])
     knowledge_graph = results.get("knowledge_graph", [])
     
-    # Extract the single recognized name from the Knowledge Graph
     entity_name = "Unknown"
     if knowledge_graph and len(knowledge_graph) > 0:
         entity_name = knowledge_graph[0].get("title", "Unknown")
@@ -44,9 +45,11 @@ def search_google_lens(image_bytes, api_key):
 
 
 def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, threshold=MATCH_THRESHOLD):
+
+    """Finds and verifies matching faces across the web for a given reference face."""
+
     img_bytes = _get_image_bytes(incoming_image)
     
-    # Unpack both the visual matches and the recognized entity name
     visual_matches, top_entity = search_google_lens(img_bytes, api_key)
 
     results_list = []

@@ -16,6 +16,7 @@ def delay_print(message: str = "", delay: float = 0.5):
     time.sleep(delay)
 
 def quiet_unraisable_hook(unraisable):
+    """Custom exception hook to suppress benign file closure cleanup errors."""
     if issubclass(unraisable.exc_type, ValueError) and "I/O operation on closed file" in str(unraisable.exc_value):
         return  
     sys.__unraisablehook__(unraisable)  
@@ -23,6 +24,8 @@ def quiet_unraisable_hook(unraisable):
 sys.unraisablehook = quiet_unraisable_hook
 
 def looks_like_human_name(name_str):
+    """Validates whether an input string conforms to typical human name conventions."""
+
     if not name_str or name_str in ["Unknown", "No Title", "Identity Not Explicitly Named"]:
         return False
     words = name_str.strip().split()
@@ -44,6 +47,9 @@ def get_input_image_path(folder_name="Input_Image"):
     return None
 
 def run_pipeline(input_image: str):
+
+    """Executes the complete facial search, entity consolidation, and block minting pipeline."""
+
     delay_print("\n[1] Initializing Blockchain...", 0.6)
     BC = BlockChain()
     delay_print(f"    -> Genesis Block created (Hash: {BC.chain[0].Block_Hash[:16]}...)", 0.6)
@@ -118,6 +124,9 @@ def run_pipeline(input_image: str):
     delay_print("\n[✓] Pipeline execution finished.", 0.6)
 
 def main_menu():
+
+    """Runs the primary interactive command-line interface loop."""
+    
     while True:
         delay_print("\n=== HH GOA 2026: Identity Verification Pipeline ===", 0.3)
         print("1. Scan a new image and build blockchain")
