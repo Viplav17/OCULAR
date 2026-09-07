@@ -3,6 +3,6 @@ venv/
 API_tk.py
 .venv/
 __pycache__
-Test_Image.png
 blockchain_output.json
 test_run_log.json
+Image.png
