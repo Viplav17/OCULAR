@@ -24,17 +24,30 @@ def search_google_lens(image_bytes, api_key):
         raise ValueError(f"SerpApi upload failed: {upload_res}")
 
     client = serpapi.Client(api_key=api_key)
+    
+    # Removed "type": "visual_matches" so we get the full JSON including the knowledge graph
     results = client.search({
         "engine": "google_lens",
         "image_id": image_id,
-        "type": "visual_matches",
         "hl": "en"
     })
-    return results.get("visual_matches", [])
+    
+    visual_matches = results.get("visual_matches", [])
+    knowledge_graph = results.get("knowledge_graph", [])
+    
+    # Extract the single recognized name from the Knowledge Graph
+    entity_name = "Unknown"
+    if knowledge_graph and len(knowledge_graph) > 0:
+        entity_name = knowledge_graph[0].get("title", "Unknown")
+        
+    return visual_matches, entity_name
+
 
 def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, threshold=MATCH_THRESHOLD):
     img_bytes = _get_image_bytes(incoming_image)
-    visual_matches = search_google_lens(img_bytes, api_key)
+    
+    # Unpack both the visual matches and the recognized entity name
+    visual_matches, top_entity = search_google_lens(img_bytes, api_key)
 
     results_list = []
     headers = {"User-Agent": "Mozilla/5.0"}
@@ -65,9 +78,20 @@ def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, thres
             distance = cosine_distance(ref_vector, candidate_vector)
 
             if distance >= threshold:
+                raw_title = match.get("title", "No Title")
+                if top_entity != "Unknown":
+                    extracted_name = top_entity
+                else:
+                    possible_name = raw_title.replace('|', '-').split('-')[0].strip()
+                    if len(possible_name.split()) > 3:
+                        extracted_name = "Identity Not Explicitly Named"
+                    else:
+                        extracted_name = possible_name
+
                 results_list.append({
                     "match_id": idx,
-                    "title": match.get("title", "No Title"),
+                    "identified_name": extracted_name,
+                    "title": raw_title,
                     "page_url": match.get("link", ""),
                     "image_url": img_url,
                     "image_fingerprint": hash256(candidate_bytes).hex(),
@@ -77,4 +101,6 @@ def find_faces_on_web(ref_vector, incoming_image, api_key=SERPAPI_API_KEY, thres
             continue
 
     results_list.sort(key=lambda x: x["cosine_distance"])
-    return results_list
+    
+    # Return the structured blockchain data AND the single identified person's name
+    return results_list, top_entity
