@@ -23,11 +23,10 @@ def Detect_Encode_Face(image_path: str):
     )
 
     face = results[0]
-    #crop
-    region = face["facial_area"]          # {"x", "y", "w", "h"}
+    region = face["facial_area"]
     x, y, w, h = region["x"], region["y"], region["w"], region["h"]
     face_crop = img[y : y + h, x : x + w]
-    # enforce_detection=False because the crop is already face-only
+    
     crop_results = DeepFace.represent(
         img_path=face_crop,
         model_name=MODEL_NAME,

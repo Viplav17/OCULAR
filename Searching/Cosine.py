@@ -2,7 +2,7 @@ import numpy as np
 from Searching.API_tk import token
 
 SERPAPI_API_KEY = token
-MATCH_THRESHOLD = 0.9
+MATCH_THRESHOLD = 0.6
 
 def cosine_distance(vec_a, vec_b):
     """Calculates cosine distance between two numerical vectors."""

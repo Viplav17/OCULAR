@@ -6,4 +6,3 @@ opencv-python
 deepface
 tf-keras
 serpapi
-cv2
