@@ -3,7 +3,7 @@ from Blockchain.Backend.Core.BlockHeader import BlockHeader
 from Blockchain.Backend.util.util import hash256
 import time
 import json as js
-
+import os
 
 ZERO_HASH = "0" * 64
 
@@ -77,3 +77,55 @@ class BlockChain:
         for Block in self.chain:
             print(f"\n--- Block {Block.Height} ---")
             print(js.dumps(Block.Data, indent=4, sort_keys=True))
+
+    def Verify_Ledger_File(self, filepath="blockchain_output.json"):
+        """Reads a JSON ledger, reconstructs the chain in memory, and verifies integrity."""
+        if not os.path.exists(filepath):
+            print(f"[-] FAILED: '{filepath}' does not exist.")
+            return False
+
+        with open(filepath, "r") as f:
+            try:
+                ledger = js.load(f)
+            except js.JSONDecodeError:
+                print(f"[-] FAILED: '{filepath}' contains invalid JSON.")
+                return False
+
+        if not ledger:
+            print("[-] FAILED: Ledger is empty.")
+            return False
+
+        self.chain = []
+
+        print(f"[*] Reconstructing and verifying {len(ledger)} blocks from {filepath}...")
+
+        for i, json_block in enumerate(ledger):
+            data_payload = json_block["Data"]
+            encoded_data = js.dumps(data_payload, sort_keys=True)
+            merkle_root = hash256(encoded_data).hex() if i > 0 else ZERO_HASH
+
+            header = BlockHeader(
+                Version=0 if i == 0 else 1,
+                PrevBlockHash=json_block["Previous_Hash"],
+                merkleroot=merkle_root,
+                bits=0,
+                TimeStamp=json_block["Timestamp"]
+            )
+
+            reconstructed_block = Block(
+                Height=json_block["Height"],
+                Blocksize=len(encoded_data) if i > 0 else 0,
+                BlockHeader=header,
+                Data=data_payload
+            )
+            
+            reconstructed_block.Block_Hash = json_block["Block_Hash"]
+
+            self.chain.append(reconstructed_block)
+
+            if not self.Verify_Block(reconstructed_block):
+                print(f"    [-] TAMPER DETECTED: Cryptographic failure at Block #{reconstructed_block.Height}!")
+                return False
+
+        print("    [+] LEDGER VERIFIED: All cryptographic links and payloads are mathematically intact.")
+        return True
